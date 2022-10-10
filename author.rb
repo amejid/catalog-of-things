@@ -1,4 +1,6 @@
 class Author
+  attr_reader :first_name, :last_name
+
   def initialize(id, first_name, last_name)
     @id = id || rand(1...1000)
     @first_name = first_name
