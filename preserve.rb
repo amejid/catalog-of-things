@@ -58,19 +58,23 @@ class Preserve
   end
 
   def load_music_albums
-    return unless file.exist?('./data/music_albums.json')
-    music_albums_loaded = JSON.parse(file.read('./data/music_albums.json'))
-    music_albums_loaded.each do |music_albums|
-      new_music_albums = music_albums.new(music_albums['id'], music_albums['publish_date'], music_albums['on_spotify'])
-      @music_albums << new.music_albums
+    return unless File.exist?('./data/music_albums.json')
+
+    music_albums_loaded = JSON.parse(File.read('./data/music_albums.json'))
+    music_albums_loaded.each do |music_album|
+      new_music_album = MusicAlbum.new(music_album['id'], music_album['publish_date'], music_album['on_spotify'])
+      @music_albums << new_music_album
+    end
   end
 
   def load_genres
-    return unless file.exist?('./data/genres.json')
-    genres_loaded  = JSON.parse(file.read('./data/genres.json'))
-    genres_loaded.each do |genres|
-      new_genres = genres.new(genres['id'], genres['name'])
-      @genres<< new.genres
+    return unless File.exist?('./data/genres.json')
+
+    genres_loaded = JSON.parse(File.read('./data/genres.json'))
+    genres_loaded.each do |genre|
+      new_genre = Genre.new(genre['id'], genre['name'])
+      @genres << new_genre
+    end
   end
 
   def save_book(book)
@@ -119,27 +123,26 @@ class Preserve
     end
   end
 
-  def save_music_album(music_albums)
-    new.music_albums = { id: music_albums.id, publish_date: music_albums.publish_date, on_spotify: music_albums.on_spotify }
+  def save_music_album(music_album)
+    new_music_album = { id: music_album.id, publish_date: music_album.publish_date,
+                        on_spotify: music_album.on_spotify }
     if File.exist?('./data/music_albums.json')
       music_albums_loaded = JSON.parse(File.read('./data/music_albums.json'))
-      music_albums_loaded << new.music_albums
+      music_albums_loaded << new_music_album
       File.write('./data/music_albums.json', JSON.pretty_generate(music_albums_loaded))
     else
-      File.write('./data/music_albums.json', JSON.pretty_generate([new.music_albums]))
+      File.write('./data/music_albums.json', JSON.pretty_generate([new_music_album]))
     end
   end
 
-  def save_genre(genres)
-    new.genres = { id: genres.id, name: genres.name }
+  def save_genre(genre)
+    new_genre = { id: genre.id, name: genre.name }
     if File.exist?('./data/genres.json')
       genres_loaded = JSON.parse(File.read('./data/genres.json'))
-      genres_loaded << new.genres
+      genres_loaded << new_genre
       File.write('./data/genres.json', JSON.pretty_generate(genres_loaded))
     else
-      File.write('./data/genres.json', JSON.pretty_generate([new.genres]))
+      File.write('./data/genres.json', JSON.pretty_generate([new_genre]))
     end
-  end
-
   end
 end
