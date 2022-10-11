@@ -26,7 +26,13 @@ class App
     end
   end
 
-  def list_music_albums; end
+  def list_music_albums
+    return puts 'No music albums found' if @preserve.music_albums.empty?
+
+    @preserve.music_albums.each_with_index do |music_album, index|
+      puts "#{index + 1}) On spotify: #{music_album.on_spotify}, Publish date: #{music_album.publish_date}"
+    end
+  end
 
   def list_games
     return puts 'No games found' if @preserve.games.empty?
@@ -37,7 +43,13 @@ class App
     end
   end
 
-  def list_genres; end
+  def list_genres
+    return puts 'No genres found' if @preserve.genres.empty?
+
+    @preserve.genres.each_with_index do |genre, index|
+      puts "#{index + 1}) Name: #{genre.name}"
+    end
+  end
 
   def list_labels
     return puts 'No labels found' if @preserve.labels.empty?
@@ -69,7 +81,17 @@ class App
     puts 'Book created successfully'
   end
 
-  def add_music_album; end
+  def add_music_album
+    puts 'Enter on spotify [Y / N]'
+    on_spotify = gets.chomp.downcase == 'y'
+    puts 'Enter publish date in format (YYYY-MM-DD)'
+    publish_date = Date.parse(gets.chomp)
+
+    new_music_album = MusicAlbum.new(nil, publish_date, on_spotify)
+    @preserve.music_albums.push(new_music_album)
+    @preserve.save_music_album(new_music_album)
+    puts 'Music album created successfully'
+  end
 
   def add_game
     puts 'Enter multiplayer [Yes / No]'
@@ -97,7 +119,15 @@ class App
     puts 'Label created successfully'
   end
 
-  def add_genre; end
+  def add_genre
+    puts 'Enter name'
+    name = gets.chomp
+
+    new_genre = Genre.new(nil, name)
+    @preserve.genres.push(new_genre)
+    @preserve.save_genre(new_genre)
+    puts 'Genre created successfully'
+  end
 
   def add_author
     puts 'Enter first name'
