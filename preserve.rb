@@ -57,9 +57,15 @@ class Preserve
     end
   end
 
-  def load_music_albums; end
+  def load_music_albums
+    return unless file.exist?('./data/music_albums.json')
+    music_albums_loaded = JSON.parse(file.read('./data/music_albums.json'))
+    music_albums_loaded.each do |music_albums|
+      new_music_albums = music_albums.new(music_albums['id'], music_albums['publish_date'], music_albums['on_spotify'])
+      @music_albums << new.music_albums
+  end
 
-  def load_genres; end
+
 
   def save_book(book)
     new_book = { id: book.id, publish_date: book.publish_date, publisher: book.publisher,
