@@ -119,7 +119,16 @@ class Preserve
     end
   end
 
-  def save_music_album; end
+  def save_music_album(music_albums)
+    new.music_albums = { id: music_albums.id, publish_date: music_albums.publish_date, on_spotify: music_albums.on_spotify }
+    if File.exist?('./data/music_albums.json')
+      music_albums_loaded = JSON.parse(File.read('./data/music_albums.json'))
+      music_albums_loaded << new.music_albums
+      File.write('./data/music_albums.json', JSON.pretty_generate(music_albums_loaded))
+    else
+      File.write('./data/music_albums.json', JSON.pretty_generate([new.music_albums]))
+    end
+  end
 
   def save_genre; end
 end
