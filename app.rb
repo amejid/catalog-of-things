@@ -28,7 +28,14 @@ class App
 
   def list_music_albums; end
 
-  def list_games; end
+  def list_games
+    return puts 'No games found' if @preserve.games.empty?
+
+    @preserve.games.each_with_index do |game, index|
+      puts "#{index + 1}) Multiplayer: #{game.multiplayer},
+      Last played at: #{game.last_played_at}, Publish date: #{game.publish_date}"
+    end
+  end
 
   def list_genres; end
 
@@ -40,7 +47,13 @@ class App
     end
   end
 
-  def list_authors; end
+  def list_authors
+    return puts 'No authors found' if @preserve.authors.empty?
+
+    @preserve.authors.each_with_index do |author, index|
+      puts "#{index + 1}) First Name: #{author.first_name}, Last Name: #{author.last_name}"
+    end
+  end
 
   def add_book
     puts 'Enter publisher'
@@ -58,7 +71,19 @@ class App
 
   def add_music_album; end
 
-  def add_game; end
+  def add_game
+    puts 'Enter multiplayer [Yes / No]'
+    multiplayer = gets.chomp
+    puts 'Enter last played at in format (YYYY-MM-DD)'
+    last_played_at = Date.parse(gets.chomp)
+    puts 'Enter the publish date in format (YYYY-MM-DD)'
+    publish_date = Date.parse(gets.chomp)
+
+    new_game = Game.new(nil, publish_date, multiplayer, last_played_at)
+    @preserve.games.push(new_game)
+    @preserve.save_game(new_game)
+    puts 'Game created successfully'
+  end
 
   def add_label
     puts 'Enter title'
@@ -74,5 +99,15 @@ class App
 
   def add_genre; end
 
-  def add_author; end
+  def add_author
+    puts 'Enter first name'
+    first_name = gets.chomp
+    puts 'Enter last name'
+    last_name = gets.chomp
+
+    new_author = Author.new(nil, first_name, last_name)
+    @preserve.authors.push(new_author)
+    @preserve.save_author(new_author)
+    puts 'Author created successfully'
+  end
 end
