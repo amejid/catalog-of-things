@@ -65,7 +65,13 @@ class Preserve
       @music_albums << new.music_albums
   end
 
-
+  def load_genres
+    return unless file.exist?('./data/genres.json')
+    genres_loaded  = JSON.parse(file.read('./data/genres.json'))
+    genres_loaded.each do |genres|
+      new_genres = genres.new(genres['id'], genres['name'])
+      @genres<< new.genres
+  end
 
   def save_book(book)
     new_book = { id: book.id, publish_date: book.publish_date, publisher: book.publisher,
