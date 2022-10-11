@@ -130,5 +130,16 @@ class Preserve
     end
   end
 
-  def save_genre; end
+  def save_genre(genres)
+    new.genres = { id: genres.id, name: genres.name }
+    if File.exist?('./data/genres.json')
+      genres_loaded = JSON.parse(File.read('./data/genres.json'))
+      genres_loaded << new.genres
+      File.write('./data/genres.json', JSON.pretty_generate(genres_loaded))
+    else
+      File.write('./data/genres.json', JSON.pretty_generate([new.genres]))
+    end
+  end
+
+  end
 end
