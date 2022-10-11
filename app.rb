@@ -1,6 +1,11 @@
 require 'date'
 require_relative 'preserve'
 require_relative 'book'
+require_relative 'label'
+require_relative 'music_album'
+require_relative 'genre'
+require_relative 'game'
+require_relative 'author'
 
 class App
   def initialize
@@ -27,7 +32,13 @@ class App
 
   def list_genres; end
 
-  def list_labels; end
+  def list_labels
+    return puts 'No labels found' if @preserve.labels.empty?
+
+    @preserve.labels.each_with_index do |label, index|
+      puts "#{index + 1}) Title: #{label.title}, Color: #{label.color}"
+    end
+  end
 
   def list_authors; end
 
@@ -42,14 +53,24 @@ class App
     new_book = Book.new(nil, publish_date, publisher, cover_state)
     @preserve.books.push(new_book)
     @preserve.save_book(new_book)
-    puts 'Book added successfully'
+    puts 'Book created successfully'
   end
 
   def add_music_album; end
 
   def add_game; end
 
-  def add_label; end
+  def add_label
+    puts 'Enter title'
+    title = gets.chomp
+    puts 'Enter color'
+    color = gets.chomp
+
+    new_label = Label.new(nil, title, color)
+    @preserve.labels.push(new_label)
+    @preserve.save_label(new_label)
+    puts 'Label created successfully'
+  end
 
   def add_genre; end
 
