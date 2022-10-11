@@ -1,8 +1,9 @@
+require 'securerandom'
 class Label
-  attr_reader :title, :color
+  attr_reader :id, :title, :color
 
   def initialize(id, title, color)
-    @id = id || rand(1...1000)
+    @id = id || SecureRandom.uuid
     @title = title
     @color = color
     @items = []
