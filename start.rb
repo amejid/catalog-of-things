@@ -40,12 +40,6 @@ class Start
       @app.add_music_album
     when 9
       @app.add_game
-    when 10
-      @app.add_label
-    when 11
-      @app.add_genre
-    when 12
-      @app.add_author
     else
       puts 'Invalid input'
     end

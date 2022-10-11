@@ -23,6 +23,8 @@ class Preserve
     books_loaded = JSON.parse(File.read('./data/books.json'))
     books_loaded.each do |book|
       new_book = Book.new(book['id'], book['publish_date'], book['publisher'], book['cover_state'])
+      new_label = @labels.select { |label| label.id == book['label_id'] }[0]
+      new_book.add_label(new_label)
       @books << new_book
     end
   end
@@ -43,6 +45,8 @@ class Preserve
     games_loaded = JSON.parse(File.read('./data/games.json'))
     games_loaded.each do |game|
       new_game = Game.new(game['id'], game['publish_date'], game['multiplayer'], game['last_played_at'])
+      new_author = @authors.select { |author| author.id == game['author_id'] }[0]
+      new_game.add_author(new_author)
       @games << new_game
     end
   end
@@ -63,6 +67,8 @@ class Preserve
     music_albums_loaded = JSON.parse(File.read('./data/music_albums.json'))
     music_albums_loaded.each do |music_album|
       new_music_album = MusicAlbum.new(music_album['id'], music_album['publish_date'], music_album['on_spotify'])
+      new_genre = @genres.select { |genre| genre.id == music_album['genre_id'] }[0]
+      new_music_album.add_genre(new_genre)
       @music_albums << new_music_album
     end
   end
@@ -79,7 +85,7 @@ class Preserve
 
   def save_book(book)
     new_book = { id: book.id, publish_date: book.publish_date, publisher: book.publisher,
-                 cover_state: book.cover_state }
+                 cover_state: book.cover_state, label_id: book.label.id }
     if File.exist?('./data/books.json')
       books_loaded = JSON.parse(File.read('./data/books.json'))
       books_loaded << new_book
@@ -102,7 +108,7 @@ class Preserve
 
   def save_game(game)
     new_game = { id: game.id, publish_date: game.publish_date, multiplayer: game.multiplayer,
-                 last_played_at: game.last_played_at }
+                 last_played_at: game.last_played_at, author_id: game.author.id }
     if File.exist?('./data/games.json')
       games_loaded = JSON.parse(File.read('./data/games.json'))
       games_loaded << new_game
@@ -125,7 +131,7 @@ class Preserve
 
   def save_music_album(music_album)
     new_music_album = { id: music_album.id, publish_date: music_album.publish_date,
-                        on_spotify: music_album.on_spotify }
+                        on_spotify: music_album.on_spotify, genre_id: music_album.genre.id }
     if File.exist?('./data/music_albums.json')
       music_albums_loaded = JSON.parse(File.read('./data/music_albums.json'))
       music_albums_loaded << new_music_album
