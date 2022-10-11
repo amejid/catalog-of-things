@@ -29,11 +29,12 @@ class App
   def list_music_albums; end
 
   def list_games
-      return puts "No games found" if @preserve.games.empty?
+    return puts 'No games found' if @preserve.games.empty?
 
-      @preserve.games.each_with_index do |game, index|
-          puts "#{index + 1}) Multiplayer: #{game.multiplayer}, Last played at: #{game.last_played_at}, Publish date: #{game.publish_date} \n"
-      end
+    @preserve.games.each_with_index do |game, index|
+      puts "#{index + 1}) Multiplayer: #{game.multiplayer},
+      Last played at: #{game.last_played_at}, Publish date: #{game.publish_date}"
+    end
   end
 
   def list_genres; end

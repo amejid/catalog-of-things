@@ -49,12 +49,12 @@ class Preserve
 
   def load_authors
     return unless File.exist?('./data/authors.json')
-      
-      authors_loaded = JSON.parse(File.read('./data/authors.json'))
-      authors_loaded.each do |author|
-        new_author = Author.new(author['id'], author['first_name'], author['last_name'])
-        @authors << new_author
-      end
+
+    authors_loaded = JSON.parse(File.read('./data/authors.json'))
+    authors_loaded.each do |author|
+      new_author = Author.new(author['id'], author['first_name'], author['last_name'])
+      @authors << new_author
+    end
   end
 
   def load_music_albums; end
@@ -97,7 +97,7 @@ class Preserve
   end
 
   def save_author(author)
-   new_author = { id: author.id, first_name: author.first_name, last_name: author.last_name }
+    new_author = { id: author.id, first_name: author.first_name, last_name: author.last_name }
     if File.exist?('./data/authors.json')
       authors_loaded = JSON.parse(File.read('./data/authors.json'))
       authors_loaded << new_author
