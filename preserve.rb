@@ -1,6 +1,10 @@
 require 'json'
 require_relative 'book'
-
+require_relative 'label'
+require_relative 'music_album'
+require_relative 'genre'
+require_relative 'game'
+require_relative 'author'
 class Preserve
   attr_accessor :books, :labels, :games, :authors, :music_albums, :genres
 
@@ -23,7 +27,15 @@ class Preserve
     end
   end
 
-  def load_labels; end
+  def load_labels
+    return unless File.exist?('./data/labels.json')
+
+    labels_loaded = JSON.parse(File.read('./data/labels.json'))
+    labels_loaded.each do |label|
+      new_label = Label.new(label['id'], label['title'], label['color'])
+      @labels << new_label
+    end
+  end
 
   def load_games; end
 
@@ -45,7 +57,16 @@ class Preserve
     end
   end
 
-  def save_label; end
+  def save_label(label)
+    new_label = { id: label.id, title: label.title, color: label.color }
+    if File.exist?('./data/labels.json')
+      labels_loaded = JSON.parse(File.read('./data/labels.json'))
+      labels_loaded << new_label
+      File.write('./data/labels.json', JSON.pretty_generate(labels_loaded))
+    else
+      File.write('./data/labels.json', JSON.pretty_generate([new_label]))
+    end
+  end
 
   def save_game; end
 
