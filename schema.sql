@@ -30,7 +30,6 @@ CREATE TABLE music_album
     genre_id     INTEGER REFERENCES genre (id)
 )
 
-
 CREATE TABLE author
 (
     id         SERIAL PRIMARY KEY,
